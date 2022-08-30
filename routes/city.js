@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 //me traigo una propiedad del objeto
-const {create, read} = require('../controllers/cityController')
+const {create, read, modify, deletecity} = require('../controllers/cityController')
 
 // me traigo todo el objeto
 // const cityController = require('../controllers/cityController')
@@ -10,5 +10,8 @@ const {create, read} = require('../controllers/cityController')
 
 router.post('/', create)
 router.get('/:id', read)
+router.put('/:id', modify)
+router.delete('/:id', deletecity)
+
 
 module.exports = router;
