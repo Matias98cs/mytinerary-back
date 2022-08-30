@@ -30,14 +30,14 @@ const cityController = {
                 })
             }else {
                 res.status(404).json({
-                    message: 'Couldt find city',
+                    message: "Couldn't find city",
                     success: false
                 })
             }
         }catch(error){
             console.log(error)
             res.status(400).json({
-                message: "Could't obtain city",
+                message: "Couldn't obtain city",
                 success: false
             })
         }
@@ -50,12 +50,13 @@ const cityController = {
             cityDb = await City.findOneAndUpdate({_id:id}, city, {new:true})
             if(cityDb){
                 res.status(200).json({
-                    message: 'City modificado',
+                    message: 'City modified',
+                    response: cityDb,
                     success: true
                 })
             }else {
                 res.status(404).json({
-                    message: 'Couldt find city',
+                    message: "Couldn't find city",
                     success: false
                 })
             }
@@ -63,9 +64,34 @@ const cityController = {
         }catch(error){
             console.log(error)
             res.status(400).json({
-                message: "Could't obtain city",
+                message: "Couldn't obtain city",
                 success: false
             })
+        }
+    },
+    readAll: async(req, res) => {
+        try { 
+            let cities = await City.find()
+            if (cities) {
+                res.status(200).json({
+                    message: 'Cities find',
+                    response: cities,
+                    success: true
+                })
+            }else {
+                res.status(404).json({
+                    message: "Couldn't find cities",
+                    success: false
+                })
+            }
+            
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                message: "Couldn't obtain cities",
+                success: false
+            })
+            
         }
     },
     deletecity: async(req, res) => {
@@ -75,23 +101,24 @@ const cityController = {
             city = await City.findOneAndDelete({_id:id})
             if(city){
                 res.status(200).json({
-                    message: 'City delete',
+                    message: 'City deleted',
                     success: true
                 })
             }else{
                 res.status(404).json({
-                    message: 'Couldt find city',
+                    message: "Couldn't find city",
                     success: false
                 })
             }
         }catch(error){
             console.log(error)
             res.status(400).json({
-                message: "Could't obtain city",
+                message: "Couldn't obtain city",
                 success: false
             })
         }
     }
+    
 }
 
 module.exports = cityController;
