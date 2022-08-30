@@ -41,6 +41,56 @@ const cityController = {
                 success: false
             })
         }
+    },
+    modify: async(req, res) => {
+        const {id} = req.params
+        const city = req.body
+        let cityDb
+        try{
+            cityDb = await City.findOneAndUpdate({_id:id}, city, {new:true})
+            if(cityDb){
+                res.status(200).json({
+                    message: 'City modificado',
+                    success: true
+                })
+            }else {
+                res.status(404).json({
+                    message: 'Couldt find city',
+                    success: false
+                })
+            }
+        
+        }catch(error){
+            console.log(error)
+            res.status(400).json({
+                message: "Could't obtain city",
+                success: false
+            })
+        }
+    },
+    deletecity: async(req, res) => {
+        const {id} = req.params
+        let city
+        try{
+            city = await City.findOneAndDelete({_id:id})
+            if(city){
+                res.status(200).json({
+                    message: 'City delete',
+                    success: true
+                })
+            }else{
+                res.status(404).json({
+                    message: 'Couldt find city',
+                    success: false
+                })
+            }
+        }catch(error){
+            console.log(error)
+            res.status(400).json({
+                message: "Could't obtain city",
+                success: false
+            })
+        }
     }
 }
 
