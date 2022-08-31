@@ -117,8 +117,28 @@ const cityController = {
                 success: false
             })
         }
+    },
+    findCity: async(req, res) => {
+        let cityfind
+        let query = {}
+        if(req.query.city){
+            query.city = req.query.city
+        }
+        try{
+            cityfind = await City.find(query)
+            res.status(200).json({
+                message: "Se encontro",
+                response: cityfind,
+                success: true
+            })
+        }catch(error){
+            console.log(error)
+            res.status(400).json({
+                message: 'No se encontro nada',
+                success: false
+            })
+        }
     }
-    
 }
 
 module.exports = cityController;
