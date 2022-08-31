@@ -140,7 +140,7 @@ const cityController = {
             }
         }catch(error){
             console.log(error)
-            res.status(400).json({
+            res.status(500).json({
                 message: 'No se encontro nada',
                 success: false
             })
