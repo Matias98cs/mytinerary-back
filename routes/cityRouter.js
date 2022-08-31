@@ -8,8 +8,8 @@ const {create, read, modify, deletecity, readAll, findCity} = require('../contro
 // const cityController = require('../controllers/cityController')
 // const createController = cityController.create
 
+router.get('/all', readAll)
 router.get('/', findCity)
-router.get('/', readAll)
 router.post('/', create)
 router.get('/:id', read)
 router.put('/:id', modify)
