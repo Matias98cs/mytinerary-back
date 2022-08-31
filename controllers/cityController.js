@@ -125,12 +125,19 @@ const cityController = {
             query.city = req.query.city
         }
         try{
-            cityfind = await City.find(query)
-            res.status(200).json({
-                message: "Se encontro",
-                response: cityfind,
-                success: true
-            })
+            cityfind = await City.find({city: {$regex : "^" + query.city}}).exec()
+            if(cityfind.length > 0){
+                res.status(200).json({
+                    message: "Se encontro",
+                    response: cityfind,
+                    success: true
+                })
+            }else{
+                res.status(404).json({
+                    message: "No se encontro la que ingresaste",
+                    success: false
+                })
+            }
         }catch(error){
             console.log(error)
             res.status(400).json({
