@@ -11,6 +11,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var cityRouter = require('./routes/cityRouter');
 var userRouter = require('./routes/userRouter')
+var itineraryRouter = require('./routes/itineraryRouter')
 
 // var usersRouter = require('./routes/users');
 
@@ -28,9 +29,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/cities', cityRouter);
+app.use('/', indexRouter)
+app.use('/cities', cityRouter)
 app.use('/auth', userRouter)
+app.use('/itineraries', itineraryRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
