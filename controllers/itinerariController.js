@@ -55,6 +55,30 @@ const itineraryController = {
                 success: false
             })
         }
+    },
+    deleteItinerary: async(req, res) => {
+        const {id} = req.params
+        let itinerary
+        try{
+            itinerary = await Itinerary.findOneAndDelete({_id: id})
+            if(itinerary){
+                res.status(200).json({
+                    message: 'Itinerary deleted',
+                    success: true
+                })
+            }else{
+                res.status(404).json({
+                    message: 'Couldnt find itinerary',
+                    success: false
+                })
+            }
+        }catch(error){
+            console.log(error)
+            res.status(400).json({
+                message: "Couldnt obtain city",
+                success: false
+            })
+        }
     }
 }
 
