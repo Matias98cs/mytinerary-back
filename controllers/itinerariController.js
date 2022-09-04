@@ -19,26 +19,39 @@ const itineraryController = {
     },
     modifItinerary: async(req, res) => {
         const {id} = req.params
-        const user = req.body
+        const filter = {id: id}
+        const newData = {
+            name: req.body.name,
+            user: req.body.user,
+            city: req.body.city,
+            price: req.body.price,
+            likes: req.body.likes,
+            tags: req.body.tags,
+            duration: req.body.duration,
+        }
         let userDb
         try{
-            userDb = await new Itinerary.findOneAndUpdate({_id:id}, user, {new: true})
+            userDb = await Itinerary.findOneAndUpdate(filter, newData, {
+                new: true,
+                upsert: true,
+                rawResult: true
+            })
             if(userDb){
                 res.status(200).json({
-                    message: 'User modified',
+                    message: 'Itinerary modified',
                     response: userDb,
                     success: true
                 })
             }else{
                 res.status(404).json({
-                    message: "Couldn't modified user",
+                    message: "Couldn't modified itinerary",
                     success: false
                 })
             }
         }catch(error){
             console.log(error)
             res.status(400).json({
-                message: "Could't obtain user",
+                message: "Could't obtain itinerary",
                 success: false
             })
         }
