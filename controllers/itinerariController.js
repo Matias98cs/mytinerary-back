@@ -19,27 +19,13 @@ const itineraryController = {
     },
     modifItinerary: async(req, res) => {
         const {id} = req.params
-        const filter = {id: id}
-        const newData = {
-            name: req.body.name,
-            user: req.body.user,
-            city: req.body.city,
-            price: req.body.price,
-            likes: req.body.likes,
-            tags: req.body.tags,
-            duration: req.body.duration,
-        }
-        let userDb
+        
         try{
-            userDb = await Itinerary.findOneAndUpdate(filter, newData, {
-                new: true,
-                upsert: true,
-                rawResult: true
-            })
-            if(userDb){
+            let itinerary = await Itinerary.findOne({_id: id})
+            if(itinerary){
+                await Itinerary.findOneAndUpdate({_id: id}, req.body, {new: true})
                 res.status(200).json({
                     message: 'Itinerary modified',
-                    response: userDb,
                     success: true
                 })
             }else{
