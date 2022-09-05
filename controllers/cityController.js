@@ -16,7 +16,7 @@ const cityController = {
             })
         }
     },
-    read: async(req, res) => {
+    readId: async(req, res) => {
         const {id} = req.params
         try{
             let city = await City.findOne({_id:id})
@@ -91,7 +91,7 @@ const cityController = {
                 res.status(200).json({
                     message: "Cities find",
                     response: cities,
-                    success: false
+                    success: true
                 })
             }
             
@@ -128,30 +128,19 @@ const cityController = {
             })
         }
     },
-    findCity: async(req, res) => {
-        let cityfind
-        let query = {}
-        if(req.query.city){
-            query.city = req.query.city
-        }
-        try{
-            cityfind = await City.find({city: {$regex : "^" + query.city}}).exec()
-            if(cityfind.length > 0){
-                res.status(200).json({
-                    message: "Se encontro",
-                    response: cityfind,
-                    success: true
-                })
-            }else{
-                res.status(404).json({
-                    message: "No se encontro la que ingresaste",
-                    success: false
-                })
-            }
+    citiesAll: async(req, res) => {
+        let citiesFind
+        try{    
+            citiesFind = await City.find()
+            res.status(200).json({
+                message: "Cities",
+                response: citiesFind,
+                success: true
+            })
         }catch(error){
             console.log(error)
-            res.status(500).json({
-                message: 'No se encontro nada',
+            res.status(400).json({
+                message: 'Cities not found ',
                 success: false
             })
         }
