@@ -12,7 +12,7 @@ router.get('/', readAll)
 router.get('/', citiesAll)
 router.post('/', create)
 router.get('/:id', readId)
-router.put('/:id', modify)
+router.patch('/:id', modify)
 router.delete('/:id', deletecity)
 
 module.exports = router;
