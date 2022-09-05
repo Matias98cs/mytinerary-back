@@ -2,16 +2,16 @@ var express = require('express');
 var router = express.Router();
 
 //me traigo una propiedad del objeto
-const {create, read, modify, deletecity, readAll, findCity} = require('../controllers/cityController')
+const {create, readId, modify, deletecity, readAll, citiesAll} = require('../controllers/cityController')
 
 // me traigo todo el objeto
 // const cityController = require('../controllers/cityController')
 // const createController = cityController.create
 
 router.get('/', readAll)
-// router.get('/', findCity)
+router.get('/', citiesAll)
 router.post('/', create)
-router.get('/:id', read)
+router.get('/:id', readId)
 router.put('/:id', modify)
 router.delete('/:id', deletecity)
 
