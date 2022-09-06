@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
     name: { type: String, required: true },
-    user: { type: String, },
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: 'users',
+        requiered: true
+    },
     city: {
         type: mongoose.Types.ObjectId,
         ref: 'cities',
