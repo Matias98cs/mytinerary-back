@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-const { createItinerary, modifItinerary, deleteItinerary, readFromCity} = require('../controllers/itinerariController')
+const { createItinerary, modifItinerary, deleteItinerary, readAll} = require('../controllers/itinerariController')
 
+router.get('/query', readAll)
 router.post('/', createItinerary)
-router.get('/:id', readFromCity)
 router.patch('/:id', modifItinerary)
 router.delete('/:id', deleteItinerary)
 
