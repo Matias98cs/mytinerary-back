@@ -66,12 +66,19 @@ const itineraryController = {
             })
         }
     },
-    readFromCity: async (req, res) => {
-        const { id } = req.params
-        let itineraryFind
+    readAll: async (req, res) => {
+        let itineraryFind 
+        let query = {}
+        if(req.query.user){
+            query.user = req.query.user
+        }
+        if(req.query.city){
+            query.city = req.query.city
+        }
         try {
-            itineraryFind = await Itinerary.find({ city: id })
+            itineraryFind = await Itinerary.find(query)
                 .populate('city')
+                .populate('user', {name:1, mail:1})
             if (itineraryFind) {
                 res.status(200).json({
                     message: "Itinerary",
@@ -92,7 +99,6 @@ const itineraryController = {
             })
         }
     }
-
 }
 
 
