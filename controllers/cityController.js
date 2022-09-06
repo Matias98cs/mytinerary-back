@@ -4,10 +4,11 @@ const cityController = {
     create: async (req, res) => {
 
         try {
-            await new City(req.body).save()
+            let citi = await new City(req.body).save()
             res.status(201).json({
                 message: 'City created',
                 success: true,
+                id : citi.id
             })
         } catch (error) {
             res.status(400).json({
