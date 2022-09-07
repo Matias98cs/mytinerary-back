@@ -13,6 +13,7 @@ var cityRouter = require('./routes/cityRouter');
 var userRouter = require('./routes/userRouter')
 var itineraryRouter = require('./routes/itineraryRouter')
 var commentRouter = require('./routes/commentRouter')
+var activityRouter = require('./routes/activityRouter')
 // var usersRouter = require('./routes/users');
 
 var app = express();
@@ -33,7 +34,8 @@ app.use('/', indexRouter)
 app.use('/cities', cityRouter)
 app.use('/auth', userRouter)
 app.use('/itineraries', itineraryRouter)
-app.use('/comments',commentRouter )
+app.use('/comments', commentRouter )
+app.use('/activities', activityRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
