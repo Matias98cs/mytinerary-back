@@ -15,16 +15,24 @@ describe('POST /cities', function () {
                 description: "...",
             })
             .then(response => {
+                id = response.body.id
+                console.log(id)
                 assert.isString(response.body.id)
                 done()
             })            
     })
-})
 
     it('must respond with 200 status code', function (done) {
         request(app) 
             .get('/cities')
-            .send({})
+            .send({
+                city: "Javi",
+                country: "Hola",
+                photo: "asdasd",
+                population: 123456,
+                fundation: 2022-01-01,
+                description: "...",
+            })
             .expect(200, done) 
             
     })
@@ -36,3 +44,6 @@ describe('POST /cities', function () {
             .expect(400, done) 
             
     })
+
+})
+
