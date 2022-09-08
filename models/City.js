@@ -12,8 +12,6 @@ const schema = new mongoose.Schema({
 const City = mongoose.model(
     "cities",
     schema
-    //nombre de la colecion
-    //esquna de datos
 );
 
 module.exports = City;

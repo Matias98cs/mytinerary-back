@@ -1,9 +1,7 @@
 require('dotenv').config()
 
-//importamos la conexcion a la base de datos
 const db = require('./config/database')
 
-// importar los modelos que necesito
 const City = require('./models/City')
 
 City.create({

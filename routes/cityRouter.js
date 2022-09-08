@@ -1,12 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-//me traigo una propiedad del objeto
 const {create, readId, modify, deletecity, readAll, citiesAll} = require('../controllers/cityController')
-
-// me traigo todo el objeto
-// const cityController = require('../controllers/cityController')
-// const createController = cityController.create
 
 router.get('/', readAll)
 router.get('/', citiesAll)
