@@ -37,11 +37,12 @@ const sendMail = async(mail,code) => {// Para configurar una credencial de googl
         html: `
             <div>
                 <h1> Welcome ${mail} </h1>
+                <a href='http://localhost:4000/auth/verify/${code}'>Click to verify!</a>
             </div>
         ` //Código HTML, para renderizar en el body del mail
         //Enviar un link hacia una dirección que verifique la clave unica de verificación (Es un endpoint) 
     }
-    
+
     await transport.sendMail(mailOptions,(error, response)=>{ //Ejecutar el envío
         if(error){
             console.log(error)
