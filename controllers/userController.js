@@ -72,7 +72,7 @@ const userController = {
             if (user) {
                 user.verified = true // Si lo encuentra cambia la propiedad 
                 await user.save()
-                res.redirect(301,'https://my-tinerary-front-panzer.herokuapp.com')
+                res.redirect(301, 'https://my-tinerary-front-panzer.herokuapp.com')
             } else {
                 res.status(404).json({
                     message: "Email has not account yet",
@@ -88,7 +88,60 @@ const userController = {
         }
     },
 
-    singIn: async () => { },
+    singIn: async (req, res) => {
+        const { mail, pass, from } = req.body
+
+        try {
+            const user = await User.findOne({ mail })
+
+            if (!user) {
+                res.status(404).json({
+                    success: false,
+                    message: "User doesn't exists, please sing up"
+                })
+            } else if (user.verified) {
+                const checkPass = user.password.filter(passwordElement => bcryptjs.compareSync(pass, passwordElement))
+                if (from == 'form') {
+                    if (checkPass.length > 0) {
+
+                        const loginUser = {
+                            id: user._id,
+                            name: user.name,
+                            mail: user.mail,
+                            role: user.role,
+                            photo: user.photo
+                        }
+
+                        user.logged = true
+                        await user.save()
+
+                        res.status(200).json({
+                            success: true,
+                            response: { user: loginUser },
+                            message: 'Welcome ' + user.name
+                        })
+
+                    } else {
+                        res.status(400).json({
+                            success: false,
+                            message: 'Username or password incorrect'
+                        })
+                    }
+                }
+            } else {
+                res.status(400).json({
+                    success: false,
+                    message: 'Please, verify yout email account and try again'
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                success: false,
+                message: 'Sign in ERROR, try again later'
+            })
+        }
+    },
 
     singOut: async () => { },
 
