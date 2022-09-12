@@ -21,7 +21,7 @@ const userController = {
                 let code = crypto.randomBytes(15).toString('hex')
                 if (from === 'form') {
                     password = bcryptjs.hashSync(password, 10)
-                    user = await new User({ name, photo, lastname, mail,verified, logged, password: [password], country, role, from: [from], code }).save()
+                    user = await new User({ name, photo, lastname, mail, verified, logged, password: [password], country, role, from: [from], code }).save()
                     sendMail(mail, code)
                     res.status(201).json({
                         message: "User signed up from form",
@@ -30,7 +30,7 @@ const userController = {
                 } else { // Desde redes sociales (Cualquiera)
                     password = bcryptjs.hashSync(password, 10)
                     verified = true
-                    user = await new User({ name, photo, lastname, mail,verified, logged, password: [password], country, role, from: [from], code }).save()
+                    user = await new User({ name, photo, lastname, mail, verified, logged, password: [password], country, role, from: [from], code }).save()
                     res.status(201).json({
                         message: "User signed up from form " + from,
                         success: true
@@ -49,7 +49,7 @@ const userController = {
                     user.password.push(bcryptjs.hashSync(password, 10))
                     await user.save() //Guardar los cambios
                     res.status(201).json({
-                        message: "User signed up from "+from,
+                        message: "User signed up from " + from,
                         response: user,
                         success: true
                     })
@@ -64,11 +64,33 @@ const userController = {
         }
     },
 
-    verifyMail: async () => { },
 
-    singIn: async () => {},
+    verifyMail: async (req, res) => {
+        const { code } = req.params
+        try {
+            let user = await User.findOne({ code })
+            if (user) {
+                user.verified = true // Si lo encuentra cambia la propiedad 
+                await user.save()
+                res.redirect(301,'https://my-tinerary-front-panzer.herokuapp.com')
+            } else {
+                res.status(404).json({
+                    message: "Email has not account yet",
+                    success: false
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                message: "Could't verify account",
+                success: false
+            })
+        }
+    },
 
-    singOut: async () => {},
+    singIn: async () => { },
+
+    singOut: async () => { },
 
     createUser: async (req, res) => {
         try {
