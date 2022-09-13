@@ -2,18 +2,32 @@ const User = require('../models/User');
 const crypto = require('crypto') // Propio de nodeJS, genera codigos aleatorios
 const bcryptjs = require('bcryptjs');// Propio de nodeJs, hashea pass
 const sendMail = require('./sendMail');
+const Joi = require('joi')
+
+const validator = Joi.object(
+    {
+        name: Joi.string().min(4).message('INVALID_NAME'),
+        photo: Joi.string().uri().message('INVALID URL'),
+        lastname: Joi.string().min(4).message('INVALID_LASTNAME'),
+        mail: Joi.string().email({
+            minDomainSegments: 2, tlds: {allow: ['com', 'ar']}
+        }).message('INVALID_EMAIL'),
+        password: Joi.string().min(8).max(15).message('INVALID_PASSWORD'),
+        country: Joi.string().min(5).message('INVALID_COUNTRY'),
+        role: Joi.string(),
+        from: Joi.string(),
+        logged: Joi.boolean(),
+        verified: Joi.boolean(),
+        code: Joi.string()        
+    }
+)
 
 const userController = {
     signUp: async (req, res) => {
-        let { name,
-            photo,
-            lastname,
-            mail,
-            password,
-            country,
-            role,
-            from } = req.body
+        let { name, photo, lastname, mail, password, country, role, from } = req.body
+        
         try {
+            let result = await validator.validateAsync({name, photo, lastname, mail, password, country, role, from})
             let user = await User.findOne({ mail })
             if (!user) {
                 let logged = false
@@ -21,6 +35,7 @@ const userController = {
                 let code = crypto.randomBytes(15).toString('hex')
                 if (from === 'form') {
                     password = bcryptjs.hashSync(password, 10)
+                    await validator.validateAsync({name, photo, lastname, mail, verified, logged, country, role, code })
                     user = await new User({ name, photo, lastname, mail, verified, logged, password: [password], country, role, from: [from], code }).save()
                     sendMail(mail, code)
                     res.status(201).json({
@@ -30,6 +45,8 @@ const userController = {
                 } else { // Desde redes sociales (Cualquiera)
                     password = bcryptjs.hashSync(password, 10)
                     verified = true
+                    await validator.validateAsync({name, photo, lastname, mail, verified, logged, country, role, code })
+
                     user = await new User({ name, photo, lastname, mail, verified, logged, password: [password], country, role, from: [from], code }).save()
                     res.status(201).json({
                         message: "User signed up from form " + from,
@@ -58,7 +75,7 @@ const userController = {
         } catch (error) {
             console.log(error)
             res.status(400).json({
-                message: "could't signed up",
+                message: error.message,
                 success: false
             })
         }
