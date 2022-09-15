@@ -7,12 +7,12 @@ describe('POST /cities', function () {
         request(app) 
             .post('/cities')
             .send({
-                city: "Javi",
-                country: "Hola",
-                photo: "asdasd",
+                city: "Example Javi",
+                country: "Example country",
+                photo: "https://thumbs.dreamstime.com/b/example-red-tag-example-red-square-price-tag-117502755.jpg",
                 population: 123456,
                 fundation: 2022-01-01,
-                description: "...",
+                description: "example here for more examples",
             })
             .then(response => {
                 id = response.body.id
