@@ -32,7 +32,6 @@ const schema = new mongoose.Schema({
      }],
     country: { 
         type: String,
-        required: true,
         min: 4
     },
     role: {type: String, required: true},
