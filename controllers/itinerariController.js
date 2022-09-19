@@ -92,7 +92,7 @@ const itineraryController = {
             itineraryFind = await Itinerary.find(query)
                 .populate('city')
                 .populate('user')
-            if (itineraryFind) {
+            if (itineraryFind.length > 0) {
                 res.status(200).json({
                     message: "Itinerary",
                     response: itineraryFind,
