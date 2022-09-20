@@ -281,6 +281,24 @@ const userController = {
       });
     }
   },
+  veryToken:(req, res) => {
+    if(!req.err){
+      const token = jwt.sign({id: req.user.id}, process.env.KEY_JWT, {expiresIn: 60*60*24})
+      res.status(200).json({
+        success: true,
+        response: {
+          user: req.user,
+          token: token
+        },
+        message: 'Welcome' + req.user.name + '!'
+      })
+    }else {
+      res.status(400).json({
+        success: false,
+        message: 'sign in please'
+      })
+    }
+  }
 };
 
 module.exports = userController;
