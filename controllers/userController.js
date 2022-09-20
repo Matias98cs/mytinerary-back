@@ -1,8 +1,10 @@
 const User = require("../models/User");
-const crypto = require("crypto"); // Propio de nodeJS, genera codigos aleatorios
-const bcryptjs = require("bcryptjs"); // Propio de nodeJs, hashea pass
+const crypto = require("crypto");
+const bcryptjs = require("bcryptjs");
 const sendMail = require("./sendMail");
 const Joi = require("joi");
+const jwt = require('jsonwebtoken')
+
 
 const validator = Joi.object({
   name: Joi.string().min(4).message("INVALID_NAME"),
@@ -76,7 +78,6 @@ const userController = {
             success: true,
           });
         } else {
-          // Desde redes sociales (Cualquiera)
           password = bcryptjs.hashSync(password, 10);
           verified = true;
           await validator.validateAsync({
@@ -110,18 +111,16 @@ const userController = {
           });
         }
       } else {
-        // Si existe el usuario
         if (user.from.includes(from)) {
           res.status(200).json({
             message: "User already exists",
             success: false,
           });
         } else {
-          // user.from = ['google','facebook']
           user.from.push(from);
           user.verified = true;
           user.password.push(bcryptjs.hashSync(password, 10));
-          await user.save(); //Guardar los cambios
+          await user.save();
           res.status(201).json({
             message: "User signed up from " + from,
             response: user,
@@ -143,7 +142,7 @@ const userController = {
     try {
       let user = await User.findOne({ code });
       if (user) {
-        user.verified = true; // Si lo encuentra cambia la propiedad
+        user.verified = true;
         await user.save();
         res.redirect(301, "https://my-tinerary-front-panzer.herokuapp.com");
       } else {
@@ -187,11 +186,12 @@ const userController = {
             };
 
             user.logged = true;
+            const token = jwt.sign({id: user._id}, process.env.KEY_JWT, {expiresIn: 60*60*24})
             await user.save();
 
             res.status(200).json({
               success: true,
-              response: { user: loginUser },
+              response: { user: loginUser, token: token },
               message: "Welcome " + user.name,
             });
           } else {
@@ -210,10 +210,11 @@ const userController = {
               photo: user.photo,
             };
             user.logged = true;
+            const token = jwt.sign({id: user._id}, process.env.KEY_JWT, {expiresIn: 60*60*24})
             await user.save();
             res.status(200).json({
               success: true,
-              response: { user: loginUser },
+              response: { user: loginUser, token: token },
               message: "Welcome " + user.name,
             });
           } else {
@@ -280,6 +281,24 @@ const userController = {
       });
     }
   },
+  veryToken:(req, res) => {
+    if(!req.err){
+      const token = jwt.sign({id: req.user.id}, process.env.KEY_JWT, {expiresIn: 60*60*24})
+      res.status(200).json({
+        success: true,
+        response: {
+          user: req.user,
+          token: token
+        },
+        message: 'Welcome' + req.user.name + '!'
+      })
+    }else {
+      res.status(400).json({
+        success: false,
+        message: 'sign in please'
+      })
+    }
+  }
 };
 
 module.exports = userController;
