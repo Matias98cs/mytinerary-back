@@ -1,8 +1,16 @@
 const Comment = require('../models/Comment')
+const Joi = require("joi");
+
+const validator = Joi.object({
+    comment: Joi.string().min(1).max(100).message("INVALID_COMMENT"),
+    user: Joi.string(),
+    itinerary: Joi.string()
+});
 
 const commentController = {
     createComment: async (req, res) => {
         try {
+            let result = await validator.validateAsync(req.body)
             let comment = await new Comment(req.body).save()
             res.status(201).json({
                 message: 'Created',
@@ -12,8 +20,8 @@ const commentController = {
         } catch (error) {
             console.log(error)
             res.status(400).json({
-                message: 'Dont created',
-                message: false
+                message: error.message,
+                success: false
             })
         }
     },
@@ -45,7 +53,8 @@ const commentController = {
                 success: false
             })
         }
-    }
+    },
+    
 
 }
 
