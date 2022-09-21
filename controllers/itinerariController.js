@@ -22,8 +22,9 @@ const itineraryController = {
         success: true,
       });
     } catch (error) {
+      console.log(error)
       res.status(400).json({
-        message: error.message,
+        message: error,
         success: false,
       });
     }
