@@ -15,5 +15,4 @@ const Activity = mongoose.model(
     "Activities",
     schema
 );
-
 module.exports = Activity;
