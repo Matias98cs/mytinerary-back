@@ -2,7 +2,7 @@ const Itinerary = require("../models/Itinerary");
 const Joi = require("joi");
 
 const validator = Joi.object({
-  name: Joi.string().min(10).max(50).message("INVALID_NAME"),
+  name: Joi.string().min(5).max(50).message("INVALID_NAME"),
   user: Joi.string(),
   city: Joi.string(),
   price: Joi.number().min(100).max(1200).message("INVALID_PRICE"),
@@ -24,7 +24,7 @@ const itineraryController = {
     } catch (error) {
       console.log(error)
       res.status(400).json({
-        message: error,
+        message: error.message,
         success: false,
       });
     }
@@ -33,6 +33,7 @@ const itineraryController = {
     const { id } = req.params;
 
     try {
+      let result = await validator.validateAsync(req.body)
       let itinerary = await Itinerary.findOne({ _id: id });
       if (itinerary) {
         await Itinerary.findOneAndUpdate({ _id: id }, req.body, { new: true });
@@ -49,7 +50,7 @@ const itineraryController = {
     } catch (error) {
       console.log(error);
       res.status(400).json({
-        message: "Could't obtain itinerary",
+        message: error.message,
         success: false,
       });
     }
