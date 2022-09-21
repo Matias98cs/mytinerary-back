@@ -1,4 +1,5 @@
 const Activity = require('../models/Activity')
+const City = require('../models/City')
 
 const activityController = {
     createActivity: async (req, res) => {
@@ -42,6 +43,31 @@ const activityController = {
             console.log(error)
             res.status(400).json({
                 message: 'Itineraries not found ',
+                success: false
+            })
+        }
+    },
+    updateActivity: async(req, res) => {
+        const {id} = req.params
+        try{
+            let activity = await Activity.findOne({_id: id})
+            if (activity){
+                await Activity.findOneAndUpdate({_id:id}, req.body, {new: true})
+                res.status(200).json({
+                    message: 'Activiy update',
+                    success: true,
+                    response: activity
+                })
+            }else {
+                res.status(404).json({
+                    message: "Couldn't activity update",
+                    success: false
+                })
+            }
+        }catch(error){
+            console.log(error)
+            res.status(400).json({
+                message: "Couldn't obtain update",
                 success: false
             })
         }
