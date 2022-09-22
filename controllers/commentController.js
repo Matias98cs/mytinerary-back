@@ -97,7 +97,7 @@ const commentController = {
             }
         }catch(error){
             console.log(error)
-            res.statos(400).json({
+            res.status(400).json({
                 message: "Couldnt obtain comment",
                 success: false
             })
