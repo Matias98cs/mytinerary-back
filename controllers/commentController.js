@@ -78,6 +78,30 @@ const commentController = {
                 success: false,
             });            
         }
+    },
+    deleteCommnet: async (req, res) => {
+        const {id} = req.params;
+        let commnet;
+        try {
+            commnet = await Comment.findOneAndDelete({_id: id});
+            if(commnet){
+                res.status(200).json({
+                    message: "Comment deleted",
+                    success: true,
+                })
+            }else {
+                res.statu(404).json({
+                    message: "Couldnt find comment",
+                    success: false
+                })
+            }
+        }catch(error){
+            console.log(error)
+            res.statos(400).json({
+                message: "Couldnt obtain comment",
+                success: false
+            })
+        }
     }
 
 }
