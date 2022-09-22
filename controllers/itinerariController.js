@@ -140,13 +140,10 @@ const itineraryController = {
   },
   like: async (req, res) => {
     let { id } = req.params;
-    //console.log(req.user)
     let userId = req.user.id;
     try {
       let itineraries = await Itinerary.findOne({ _id: id });
       if (itineraries.likes.includes(userId)) {
-        //event.likes.pull(userId)
-        //await event.save()
         await Itinerary.findOneAndUpdate(
           { _id: id },
           { $pull: { likes: userId } },
@@ -157,8 +154,6 @@ const itineraryController = {
           success: true,
         });
       } else {
-        //event.likes.push(userId)
-        //await event.save()
         await Itinerary.findOneAndUpdate(
           { _id: id },
           { $push: { likes: userId } },
