@@ -151,7 +151,7 @@ const itineraryController = {
         );
         res.status(200).json({
           message: "itinerary disliked",
-          success: true,
+          success: false,
         });
       } else {
         await Itinerary.findOneAndUpdate(
