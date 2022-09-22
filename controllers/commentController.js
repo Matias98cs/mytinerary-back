@@ -34,6 +34,7 @@ const commentController = {
         try {
             commentFind = await Comment.find(query)
                 .populate('itinerary')
+                .populate('user',{photo:1})
             if (commentFind) {
                 res.status(200).json({
                     message: "Itinerary",
@@ -90,14 +91,14 @@ const commentController = {
                     success: true,
                 })
             }else {
-                res.statu(404).json({
+                res.status(404).json({
                     message: "Couldnt find comment",
                     success: false
                 })
             }
         }catch(error){
             console.log(error)
-            res.statos(400).json({
+            res.status(400).json({
                 message: "Couldnt obtain comment",
                 success: false
             })
