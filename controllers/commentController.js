@@ -54,7 +54,31 @@ const commentController = {
             })
         }
     },
-    
+    modifyComment: async (req, res) => {
+        const { id } = req.params
+        try {
+            let result = await validator.validateAsync(req.body)
+            let comments = await Comment.findOne({ _id: id});
+            if (comments) {
+                await Comment.findOneAndUpdate({ _id: id},req.body,{ new: true });
+                res.status(200).json({
+                    message:'Comments modified',
+                    success: true
+                });
+            } else {
+                res.status(404).json({
+                    message: "Couldn't modified comment",
+                    success: false,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({
+                message: error.message,
+                success: false,
+            });            
+        }
+    }
 
 }
 
