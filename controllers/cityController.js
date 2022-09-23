@@ -61,6 +61,7 @@ const cityController = {
         try {
             let city = await City.findOne({ _id: id })
             if (city) {
+                let result = await validator.validateAsync(req.body)
                 await City.findOneAndUpdate({ _id: id }, req.body, { new: true })
                 res.status(200).json({
                     message: "City Updated",
@@ -77,7 +78,7 @@ const cityController = {
             console.log(error)
             res.status(400).json({
                 message: "Couldn't obtain city",
-                success: false
+                success: error.message
             })
         }
     },
