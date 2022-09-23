@@ -34,7 +34,7 @@ const commentController = {
         try {
             commentFind = await Comment.find(query)
                 .populate('itinerary')
-                .populate('user',{photo:1})
+                .populate('user',{photo:1, name: 1})
             if (commentFind) {
                 res.status(200).json({
                     message: "Itinerary",
@@ -59,9 +59,9 @@ const commentController = {
         const { id } = req.params
         try {
             let result = await validator.validateAsync(req.body)
-            let comments = await Comment.findOne({ _id: id});
+            let comments = await Comment.findOneAndUpdate({ _id: id},req.body,{ new: true });
             if (comments) {
-                await Comment.findOneAndUpdate({ _id: id},req.body,{ new: true });
+                
                 res.status(200).json({
                     message:'Comments modified',
                     success: true
