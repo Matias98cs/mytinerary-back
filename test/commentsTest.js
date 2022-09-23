@@ -1,8 +1,9 @@
 const request = require('supertest')
 const app = require('../app')
 const {asset} = require('chai')
+const {TOKEN} = process.env
 
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMmEyOGNjYzVlZWNhODNkM2NlNmQzMCIsImlhdCI6MTY2Mzc5NTA4NCwiZXhwIjoxNjYzODgxNDg0fQ.02nyg6OVKgDlGiWSQFFS_ePECdB0SBkhe1iySXsy38g"
+let token = TOKEN
 //Crear comentario
 describe('POST /comments', function (){
     it('Must respond with 201 status code', function (done) {
