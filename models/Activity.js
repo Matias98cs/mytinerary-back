@@ -9,12 +9,7 @@ const schema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        required: true,
-        validate: function (value) {
-            if (!value.startWith('http')) {
-                throw new Error('La URL debe comenzar con http')
-            }
-        }
+        required: true
     },
     itinerary: {
         type: mongoose.Types.ObjectId,
