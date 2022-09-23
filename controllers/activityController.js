@@ -4,7 +4,7 @@ const Joi = require("joi");
 
 const validator = Joi.object({
     name: Joi.string().min(5).max(50).message("INVALID_NAME"),
-    photo: Joi.string().uri().message("INVALID URL"),
+    photo: Joi.string().uri().message('INVALID URL'),
     itinerary: Joi.string(),
 });
 
