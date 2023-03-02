@@ -10,7 +10,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var cityRouter = require('./routes/cityRouter');
-var userRouter = require('./routes/userRouter')
+var authRouter = require('./routes/authRouter')
 var itineraryRouter = require('./routes/itineraryRouter')
 var commentRouter = require('./routes/commentRouter')
 var activityRouter = require('./routes/activityRouter')
@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter)
 app.use('/cities', cityRouter)
-app.use('/auth', userRouter)
+app.use('/auth', authRouter)
 app.use('/itineraries', itineraryRouter)
 app.use('/comments', commentRouter )
 app.use('/activities', activityRouter)
